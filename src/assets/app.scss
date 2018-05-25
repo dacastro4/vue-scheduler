@@ -1,0 +1,55 @@
+@import "simple-grid";
+
+$borders: 9px;
+$hoursWidth: 7%;
+$columnNumber: 8;
+$hoursWidthCalc: 6%;
+$blockHeight: 50px;
+
+.week-row {
+    @extend .row;
+
+    .day-name {
+        display: block;
+    }
+
+    .hour-name {
+        display: block;
+        padding: 10px 0 0;
+        height: $blockHeight + 1px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .real-days {
+
+        > .day-hour {
+            display: block;
+            height: $blockHeight;
+            width: 100%;
+            background-color: lightgrey;
+            border-bottom: 1px solid black;
+        }
+
+    }
+
+    .days-column, .hours-column {
+
+        @extend %col;
+        @extend .col-1;
+        width: calc((100% - #{$borders} + #{$hoursWidthCalc}) / #{$columnNumber});
+        margin: 0;
+        text-align: center;
+        border-left: 1px solid grey;
+        border-top: 1px solid grey;
+
+        &:last-child {
+            border-right: 1px solid grey;
+        }
+    }
+
+    .hours-column {
+        width: $hoursWidth;
+    }
+
+}
