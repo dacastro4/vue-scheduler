@@ -1,4 +1,7 @@
+###Work in progress!
+
 # vue-scheduler
+
 
 > A Vue.js project
 
