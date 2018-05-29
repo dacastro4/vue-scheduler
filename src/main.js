@@ -1,3 +1,5 @@
+window._ = require('lodash');
+
 import Vue from 'vue'
 import Scheduler from './Scheduler.vue'
 import App from './App.vue'

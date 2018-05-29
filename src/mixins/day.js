@@ -1,20 +1,48 @@
+import moment from "moment/moment";
+
 let day = {
 
-    data() {
+    props: {
 
-        //TODO: We can play with locale variable to support multiple languages
+        locale: {
+            default: 'en',
+            type: String,
+        },
+
+        days: {
+            default: () => [
+                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+            ],
+            type: Array|Function,
+        }
+
+    },
+
+    data() {
         return {
-            days: [
-                'Sunday',
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-            ]
+            //
         };
-    }
+    },
+
+    created() {
+        moment.updateLocale(this.locale, {
+            weekdays : this.getWeekdays(),
+        });
+    },
+
+    methods: {
+
+        getWeekdays() {
+
+            if(typeof this.weekdays === 'function') {
+                return this.weekdays();
+            } else {
+                return this.weekdays;
+            }
+
+        },
+
+    },
 };
 
 export default day;

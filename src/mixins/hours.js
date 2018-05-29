@@ -10,6 +10,10 @@ let hours = {
         startFrom: {
             default: 0,
             type: Number
+        },
+        hourFormat: {
+            default: 'hh:mm A',
+            type: String,
         }
     },
 
@@ -33,11 +37,10 @@ let hours = {
 
             for(c = start; c <= end; c += this.interval) {
 
-                let hour = startTime.add(this.interval, 'h').format('hh'),
-                    minute = startTime.format('mm'),
-                    midday = startTime.format('A');
+                let hour = startTime.add(this.interval, 'h'),
+                    string = hour.format(this.hourFormat);
 
-                this.hours.push(`${hour}:${minute} ${midday}`);
+                this.hours.push(string);
 
             }
 

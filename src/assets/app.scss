@@ -1,5 +1,6 @@
 @import "simple-grid";
 
+//
 $borders: 9px;
 $hoursWidth: 7%;
 $columnNumber: 8;
@@ -23,13 +24,11 @@ $blockHeight: 50px;
 
     .real-days {
 
-        > .day-hour {
-            display: block;
-            height: $blockHeight;
-            width: 100%;
-            background-color: lightgrey;
-            border-bottom: 1px solid black;
-        }
+        display: block;
+        height: $blockHeight;
+        width: 100%;
+        background-color: lightgrey;
+        border-bottom: 1px solid black;
 
     }
 

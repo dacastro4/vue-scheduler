@@ -1,7 +1,6 @@
 <template>
-    <div v-selectable="selectableFunctions()">
+    <div v-selectable="selectableFunctions()" data-item=".real-days">
         <div class="selection"></div>
-
         <div class="row">
             <div class="info-row">
                <span class="week-number">
@@ -14,25 +13,20 @@
                 <span class="day-name">&nbsp;</span>
                 <span class="hour-name" v-for="hour in hours">{{ hour }}</span>
             </div>
-            <div class="days-column" v-for="day in days">
+            <div class="days-column" v-for="(day, dayKey) in days">
                 <span class="day-name">{{ day }}</span>
-                <div class="real-days" v-for="hour in hours">
-                    <span class="day-hour" :data-day="day" :data-hour="hour">
-
-                    </span>
-                </div>
+                <selectable-item v-for="(hour, hourKey) in hours" :key="`${hour}-${day}`" :hour="hour" :hour-key="hourKey"
+                            :day="day" :day-key="dayKey" :selecting="selecting" :selected="selected" class="selectable">
+                </selectable-item>
             </div>
-        </div>
-        <div v-for="(item, key) in items"
-             :class="{ selected: !!selected[key], selecting: !!selecting[key] }"
-             class="selectable">{{ item }}
         </div>
     </div>
 </template>
 
 <script>
     import moment from 'moment';
-    import selectable from 'vue-selectable';
+    import selectable, {setSelectableItems} from 'vue-selectable';
+    import SelectableItem from './components/SelectableItem.vue';
     import day from './mixins/day'
     import hours from './mixins/hours'
 
@@ -42,12 +36,7 @@
             return {
                 selected: [],
                 selecting: [],
-                items: [
-                    'abc',
-                    'bcd',
-                    'cde',
-                    'asd'
-                ],
+                staticFirstSelected: [],
             }
         },
 
@@ -68,7 +57,12 @@
                 return {
                     selectedGetter: this.selectedGetter,
                     selectedSetter: this.selectedSetter,
-                    selectingSetter: this.selectingSetter
+                    selectingSetter: this.selectingSetter,
+                    initSelectable: this.initSelectable,
+                    resetSelected: this.resetSelected,
+                    // selectedProcessDown: this.selectedProcessDown,
+                    // selectedProcessUp: this.selectedProcessUp,
+                    updateSelectionProcess: this.updateSelectionProcess,
                 };
             },
 
@@ -83,15 +77,69 @@
             selectingSetter(v) {
                 this.selecting = v;
             },
+
+            initSelectable(elements) {
+                let selected = [];
+
+                _.each(elements, (item, key) => {
+
+                    let dayKey = item.dataset.dayKey,
+                        hour = item.dataset.hourKey;
+
+                    selected.push({
+                        day: dayKey,
+                        hour: hour,
+                        selected: false,
+                    });
+                });
+
+                this.staticFirstSelected = selected;
+
+                return selected;
+            },
+
+            selectedProcessUp(elems, existing) {
+
+                console.log('up', elems, existing);
+
+
+                // return this.initSelectable(this.elems);
+
+            },
+
+            selectedProcessDown(elems, existing) {
+
+                console.log('down', elems, existing);
+
+
+                // return this.initSelectable(this.elems);
+
+            },
+
+            updateSelectionProcess(elem) {
+
+                return {
+                    day: elem.dataset.dayKey,
+                    hour: elem.dataset.hour,
+                    selected: true,
+                };
+
+            },
+
+            resetSelected() {
+                return this.staticFirstSelected;
+            },
+
         },
-
-
-
 
 
         directives: {
             selectable
         },
+
+        components: {
+            SelectableItem,
+        }
 
     }
 </script>
