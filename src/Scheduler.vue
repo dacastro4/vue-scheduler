@@ -11,12 +11,12 @@
         <div class="week-row">
             <div class="hours-column">
                 <span class="day-name">&nbsp;</span>
-                <span class="hour-name" v-for="hour in hours">{{ hour }}</span>
+                <span class="hour-name" v-for="hour in hours">{{ hour.text }}</span>
             </div>
-            <div class="days-column" v-for="(day, dayKey) in days">
-                <span class="day-name">{{ day }}</span>
-                <selectable-item v-for="(hour, hourKey) in hours" :key="`${hour}-${day}`" :hour="hour" :hour-key="hourKey"
-                            :day="day" :day-key="dayKey" :selecting="selecting" :selected="selected" class="selectable">
+            <div class="days-column" v-for="(day, dayKey) in builtDays">
+                <span class="day-name">{{ day.name }}</span>
+                <selectable-item v-for="(hour, hourKey) in hours" :key="`${hour.text}-${day}`" :hour="hour.text" :hour-key="hourKey"
+                            :day="day" :day-key="dayKey" :data-date="day.date" :selecting="selecting" :selected="selected" class="selectable">
                 </selectable-item>
             </div>
         </div>
@@ -32,6 +32,9 @@
 
     export default {
         name: "scheduler",
+
+        props: [ ],
+
         data() {
             return {
                 selected: [],
@@ -84,11 +87,13 @@
                 _.each(elements, (item, key) => {
 
                     let dayKey = item.dataset.dayKey,
-                        hour = item.dataset.hourKey;
+                        hour = item.dataset.hourKey,
+                        date = item.dataset.date;
 
                     selected.push({
                         day: dayKey,
                         hour: hour,
+                        date: date,
                         selected: false,
                     });
                 });
@@ -121,6 +126,7 @@
                 return {
                     day: elem.dataset.dayKey,
                     hour: elem.dataset.hour,
+                    date: elem.dataset.date,
                     selected: true,
                 };
 
