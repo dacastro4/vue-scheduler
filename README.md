@@ -3,7 +3,7 @@
 # vue-scheduler
 
 
-> A Vue.js project
+> I didn't find anything simpler like this in another project so I made this for a work related project and I saw the opportunity to make it a package so I could share it.
 
 ## Build Setup
 
