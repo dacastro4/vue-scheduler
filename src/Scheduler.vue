@@ -38,7 +38,9 @@
     export default {
         name: "scheduler",
 
-        props: [],
+        props: [
+            'value'
+        ],
 
         data() {
             return {
@@ -80,6 +82,7 @@
             },
 
             selectedSetter(v) {
+                this.$emit('input', v);
                 this.selected = v;
             },
 
@@ -118,7 +121,7 @@
 
                 // elems.forEach(e => {
                 //     console.log(e.classList);
-                    // e.classList.hasOwnProperty('selecting');
+                // e.classList.hasOwnProperty('selecting');
                 // });
 
                 // existing.push(elem);
@@ -148,8 +151,8 @@
                     skip = [];
 
                 s = _.reject(s, selectedItem => {
-                    let inArray =  this.dateInArray(selecting, selectedItem);
-                    if(inArray) {
+                    let inArray = this.dateInArray(selecting, selectedItem);
+                    if (inArray) {
                         skip.push(selectedItem);
                         return true;
                     } else {
@@ -163,7 +166,7 @@
 
                 if (selecting.length) {
                     selecting.forEach(selectingItem => {
-                        if(!_.includes(s, selectingItem)){
+                        if (!_.includes(s, selectingItem)) {
                             s.push(selectingItem);
                         }
                     });
@@ -177,7 +180,7 @@
                 let found = false;
 
                 array.forEach(item => {
-                    if(date.date === item.date && date.day === item.day && date.hour === item.hour) {
+                    if (date.date === item.date && date.day === item.day && date.hour === item.hour) {
                         found = true;
                         return false;
                     }
