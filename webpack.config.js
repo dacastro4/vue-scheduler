@@ -89,7 +89,7 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: '#eval-source-map'
+    devtool: '#eval-source-map',
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -99,12 +99,6 @@ if (process.env.NODE_ENV === 'production') {
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: '"production"'
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            compress: {
-                warnings: false
             }
         }),
         new webpack.LoaderOptionsPlugin({

@@ -1,5 +1,5 @@
 <template>
-    <div v-selectable="selectableFunctions()" data-item=".real-days">
+    <div id="scheduler" v-selectable="selectableFunctions()" data-item=".real-days">
         <div class="selection"></div>
         <div class="row">
             <div class="info-row">
@@ -14,9 +14,14 @@
                 <span class="hour-name" v-for="hour in hours">{{ hour.text }}</span>
             </div>
             <div class="days-column" v-for="(day, dayKey) in builtDays">
-                <span class="day-name">{{ day.name }}</span>
-                <selectable-item v-for="(hour, hourKey) in hours" :key="`${hour.text}-${day}`" :hour="hour.text" :hour-key="hourKey"
-                            :day="day" :day-key="dayKey" :data-date="day.date" :selecting="selecting" :selected="selected" class="selectable">
+                <span class="day-name">
+                    {{ day.name }}
+                    <small>{{ day.date }}</small>
+                </span>
+                <selectable-item v-for="(hour, hourKey) in hours" :key="`${hour.text}-${day}`" :hour="hour.text"
+                                 :hour-key="hourKey"
+                                 :day="day" :day-key="dayKey" :data-date="day.date" :selecting="selecting"
+                                 :selected="selected" class="selectable">
                 </selectable-item>
             </div>
         </div>
@@ -33,7 +38,7 @@
     export default {
         name: "scheduler",
 
-        props: [ ],
+        props: [],
 
         data() {
             return {
@@ -63,9 +68,10 @@
                     selectingSetter: this.selectingSetter,
                     initSelectable: this.initSelectable,
                     resetSelected: this.resetSelected,
-                    // selectedProcessDown: this.selectedProcessDown,
-                    // selectedProcessUp: this.selectedProcessUp,
+                    selectedProcessDown: this.selectedProcessDown,
+                    selectedProcessUp: this.selectedProcessUp,
                     updateSelectionProcess: this.updateSelectionProcess,
+                    multiSelection: this.multiSelection,
                 };
             },
 
@@ -89,7 +95,6 @@
                     let dayKey = item.dataset.dayKey,
                         hour = item.dataset.hourKey,
                         date = item.dataset.date;
-
                     selected.push({
                         day: dayKey,
                         hour: hour,
@@ -103,18 +108,20 @@
                 return selected;
             },
 
-            selectedProcessUp(elems, existing) {
-
-                console.log('up', elems, existing);
-
-
-                // return this.initSelectable(this.elems);
-
+            selectedProcessUp(elems) {
+                return elems;
             },
 
-            selectedProcessDown(elems, existing) {
+            selectedProcessDown(elems, selecting, existing) {
 
-                console.log('down', elems, existing);
+                // console.log('down', elems, selecting, existing);
+
+                // elems.forEach(e => {
+                //     console.log(e.classList);
+                    // e.classList.hasOwnProperty('selecting');
+                // });
+
+                // existing.push(elem);
 
 
                 // return this.initSelectable(this.elems);
@@ -134,6 +141,49 @@
 
             resetSelected() {
                 return this.staticFirstSelected;
+            },
+
+            multiSelection(selected, selecting) {
+                let s = (typeof selected === 'object' ? selected : []),
+                    skip = [];
+
+                s = _.reject(s, selectedItem => {
+                    let inArray =  this.dateInArray(selecting, selectedItem);
+                    if(inArray) {
+                        skip.push(selectedItem);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+
+                selecting = _.reject(selecting, selectingItem => {
+                    return this.dateInArray(s, selectingItem) || this.dateInArray(skip, selectingItem);
+                });
+
+                if (selecting.length) {
+                    selecting.forEach(selectingItem => {
+                        if(!_.includes(s, selectingItem)){
+                            s.push(selectingItem);
+                        }
+                    });
+                }
+
+                return s;
+            },
+
+            dateInArray(array, date) {
+
+                let found = false;
+
+                array.forEach(item => {
+                    if(date.date === item.date && date.day === item.day && date.hour === item.hour) {
+                        found = true;
+                        return false;
+                    }
+                });
+
+                return found;
             },
 
         },
@@ -181,10 +231,10 @@
     }
 
     .selectable.selecting {
-        background-color: yellow;
+        background-color: yellow !important;
     }
 
     .selectable.selected {
-        background-color: orange;
+        background-color: orange !important;
     }
 </style>
