@@ -108,7 +108,7 @@
 
                 this.staticFirstSelected = selected;
 
-                return selected;
+                return [];
             },
 
             selectedProcessUp(elems) {
@@ -126,7 +126,6 @@
 
                 // existing.push(elem);
 
-
                 // return this.initSelectable(this.elems);
 
             },
@@ -143,7 +142,7 @@
             },
 
             resetSelected() {
-                return this.staticFirstSelected;
+                return [];
             },
 
             multiSelection(selected, selecting) {
@@ -190,7 +189,6 @@
             },
 
         },
-
 
         directives: {
             selectable
