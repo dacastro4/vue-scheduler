@@ -13,6 +13,8 @@ $blockHeight: 50px;
 
     .week-row {
         @extend .row;
+        border-bottom: 1px solid black;
+        box-sizing: border-box;
 
         .day-name {
             display: block;
@@ -20,20 +22,18 @@ $blockHeight: 50px;
 
         .hour-name {
             display: block;
-            padding: 10px 0 0;
-            height: $blockHeight + 1px;
+            /* padding: 10px 0 0; */
+            height: 50px;
             width: 100%;
-            box-sizing: border-box;
+            line-height: 3.5rem;
         }
 
         .real-days {
-
             display: block;
             height: $blockHeight;
             width: 100%;
             background-color: lightgrey;
-            border-bottom: 1px solid black;
-
+            border-top: 1px solid black;
         }
 
         .days-column, .hours-column {

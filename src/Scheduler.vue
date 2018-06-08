@@ -39,7 +39,8 @@
         name: "scheduler",
 
         props: [
-            'value'
+            'value',
+            'initialValues'
         ],
 
         data() {
