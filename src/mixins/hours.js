@@ -51,7 +51,12 @@ let hours = {
             ;
 
             start = weekHourStart.hour();
-            end = weekHourEnd.hour() + this.interval;
+
+            if (this.interval < 1) {
+              end = weekHourEnd.hour() + this.interval;
+            } else {
+              end = weekHourEnd.hour();
+            }
 
             for(c = start; c <= end; c += this.interval) {
 
@@ -62,7 +67,7 @@ let hours = {
                     text: string,
                 });
 
-                hour = weekHourStart.add(this.interval, 'h')
+                hour = weekHourStart.add(this.interval, 'h');
 
             }
 
