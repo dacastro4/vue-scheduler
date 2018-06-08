@@ -94,14 +94,10 @@
                 let selected = [];
 
                 _.each(elements, (item, key) => {
-
-                    let dayKey = item.dataset.dayKey,
-                        hour = item.dataset.hourKey,
-                        date = item.dataset.date;
                     selected.push({
-                        day: dayKey,
-                        hour: hour,
-                        date: date,
+                        day: item.dataset.dayKey,
+                        hour: item.dataset.hourKey,
+                        date: item.dataset.date,
                         selected: false,
                     });
                 });
@@ -134,7 +130,7 @@
 
                 return {
                     day: elem.dataset.dayKey,
-                    hour: elem.dataset.hour,
+                    hour: elem.dataset.hourKey,
                     date: elem.dataset.date,
                     selected: true,
                 };

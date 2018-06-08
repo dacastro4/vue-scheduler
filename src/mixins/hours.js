@@ -43,22 +43,26 @@ let hours = {
 
             let c = 0,
                 start = this.startFrom,
+                hour,
+                string,
                 end = 23,
                 weekHourStart = moment(`${this.weekOf} ${this.hourFrom}`, `${this.dateFormat} ${this.hourFormat}`).startOf('week'),
                 weekHourEnd = moment(`${this.weekOf} ${this.hourTo}`, `${this.dateFormat} ${this.hourFormat}`).endOf('week')
             ;
 
             start = weekHourStart.hour();
-            end = weekHourEnd.hour();
+            end = weekHourEnd.hour() + this.interval;
 
             for(c = start; c <= end; c += this.interval) {
 
-                let hour = weekHourStart.add(this.interval, 'h'),
-                    string = hour.format(this.hourFormat);
+                hour = weekHourStart;
+                string = hour.format(this.hourFormat);
 
                 this.hours.push({
                     text: string,
                 });
+
+                hour = weekHourStart.add(this.interval, 'h')
 
             }
 
