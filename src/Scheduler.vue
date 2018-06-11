@@ -40,7 +40,8 @@
 
         props: [
             'value',
-            'initialValues'
+            'initialValues',
+          'iniFunction'
         ],
 
         data() {
@@ -104,6 +105,12 @@
                 });
 
                 this.staticFirstSelected = selected;
+
+                if(typeof this.iniFunction === 'function') {
+                  this.iniFunction();
+                }
+
+//                vueSelectable.default.updateSelection();
 
                 return [];
             },
