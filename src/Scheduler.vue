@@ -1,5 +1,5 @@
 <template>
-    <div id="scheduler" v-selectable="selectableFunctions()" data-item=".real-days">
+    <div id="scheduler" v-selectable="selectableFunctions()" data-item=".real-days" ref="scheduler">
         <div class="selection"></div>
         <div class="row">
             <div class="info-row">
@@ -40,8 +40,7 @@
 
         props: [
             'value',
-            'initialValues',
-          'iniFunction'
+            'initial',
         ],
 
         data() {
@@ -104,13 +103,15 @@
                     });
                 });
 
-                this.staticFirstSelected = selected;
-
-                if(typeof this.iniFunction === 'function') {
-                  this.iniFunction();
+                if (this.initial.length) {
+                    selected = this.initial.map((item) => {
+                        item.selected = true;
+                        return item;
+                    });
+                    return selected;
                 }
 
-//                vueSelectable.default.updateSelection();
+                this.staticFirstSelected = selected;
 
                 return [];
             },
@@ -194,6 +195,12 @@
 
         },
 
+        watch: {
+            initial(newValues) {
+                setSelectableItems(this.$refs.scheduler);
+            }
+        },
+
         directives: {
             selectable
         },
@@ -209,7 +216,7 @@
     .selection {
         position: absolute;
         border: 1px dotted #000;
-        z-index: 9999;
+        z-index: 7;
         top: 0;
         left: 0;
         cursor: default;
