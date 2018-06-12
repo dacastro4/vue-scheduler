@@ -1,4 +1,4 @@
-import moment from 'moment';
+'use strict';
 
 let hours = {
 
@@ -11,12 +11,8 @@ let hours = {
             default: 'h',
             type: String
         },
-        startFrom: {
-            default: 0,
-            type: Number
-        },
         hourFrom: {
-            default: '1:00 AM',
+            default: '12:00 AM',
             type: String,
         },
         hourTo: {
@@ -33,6 +29,7 @@ let hours = {
 
         return {
             hours: [],
+            weekNumber: 1,
         };
 
     },
@@ -42,35 +39,39 @@ let hours = {
         buildHours() {
 
             let c = 0,
-                start = this.startFrom,
+                start = 0,
                 hour,
                 string,
                 end = 23,
-                weekHourStart = moment(`${this.weekOf} ${this.hourFrom}`, `${this.dateFormat} ${this.hourFormat}`).startOf('week'),
-                weekHourEnd = moment(`${this.weekOf} ${this.hourTo}`, `${this.dateFormat} ${this.hourFormat}`).endOf('week')
+                weekHourStart = this.buildDate(this.hourFrom),
+                weekHourEnd = this.buildDate(this.hourTo, true)
             ;
 
             start = weekHourStart.hour();
 
+            this.weekNumber = weekHourStart.week();
+
             if (this.interval < 1) {
-              end = weekHourEnd.hour() + this.interval;
+                end = weekHourEnd.hour() + this.interval;
             } else {
-              end = weekHourEnd.hour();
+                end = weekHourEnd.hour();
             }
 
-            for(c = start; c <= end; c += this.interval) {
+            end += weekHourEnd.minute() * 1 / 60;
+            start += weekHourStart.minute() * 1 / 60;
+
+            for (c = start; c <= end; c += this.interval) {
 
                 hour = weekHourStart;
                 string = hour.format(this.hourFormat);
 
                 this.hours.push({
                     text: string,
+                    key: c / this.interval,
                 });
-
                 hour = weekHourStart.add(this.interval, 'h');
 
             }
-
 
         },
 

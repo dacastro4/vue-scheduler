@@ -48,12 +48,3 @@
         },
     }
 </script>
-
-<style scoped>
-    .real-days.selecting > .selectable {
-        background-color: yellow;
-    }
-    .real-days.selected > .selectable {
-        background-color: orange;
-    }
-</style>

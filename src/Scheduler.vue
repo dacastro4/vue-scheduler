@@ -4,7 +4,7 @@
         <div class="row">
             <div class="info-row">
                <span class="week-number">
-                    Week Number: 1
+                    Week Number: {{ weekNumber}}
                </span>
             </div>
         </div>
@@ -13,15 +13,16 @@
                 <span class="day-name">&nbsp;</span>
                 <span class="hour-name" v-for="hour in hours">{{ hour.text }}</span>
             </div>
-            <div class="days-column" v-for="(day, dayKey) in builtDays">
+            <div class="days-column" v-for="(day) in builtDays">
                 <span class="day-name">
                     {{ day.name }}
                     <small>{{ day.date }}</small>
                 </span>
-                <selectable-item v-for="(hour, hourKey) in hours" :key="`${hour.text}-${day}`" :hour="hour.text"
-                                 :hour-key="hourKey"
-                                 :day="day" :day-key="dayKey" :data-date="day.date" :selecting="selecting"
-                                 :selected="selected" class="selectable">
+                <selectable-item v-for="(hour) in hours" :key="`${hour.text}-${day.date}`" :hour="hour.text"
+                                 :hour-key="hour.key"
+                                 :day="day" :day-key="day.key" :data-date="day.date" :selecting="selecting"
+                                 :selected="selected" class="selectable" :selected-text="selectedText"
+                                 :selecting-text="selectingText">
                 </selectable-item>
             </div>
         </div>
@@ -29,7 +30,6 @@
 </template>
 
 <script>
-    import moment from 'moment';
     import selectable, {setSelectableItems} from 'vue-selectable';
     import SelectableItem from './components/SelectableItem.vue';
     import day from './mixins/day'
@@ -38,10 +38,18 @@
     export default {
         name: "scheduler",
 
-        props: [
-            'value',
-            'initial',
-        ],
+        props: {
+            value: null,
+            initial: null,
+            selectedText: {
+                default: null,
+                type: String,
+            },
+            selectingText: {
+                default: null,
+                type: String,
+            },
+        },
 
         data() {
             return {
@@ -211,42 +219,3 @@
 
     }
 </script>
-
-<style scoped>
-    .selection {
-        position: absolute;
-        border: 1px dotted #000;
-        z-index: 7;
-        top: 0;
-        left: 0;
-        cursor: default;
-        display: none;
-    }
-
-    .container {
-        position: relative;
-        width: 500px;
-        height: 1500px;
-        background: #f0f0f0;
-    }
-
-    .selectable {
-        width: 200px;
-        height: 50px;
-        background-color: purple;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
-    .selectable.selecting {
-        background-color: yellow !important;
-    }
-
-    .selectable.selected {
-        background-color: orange !important;
-    }
-</style>

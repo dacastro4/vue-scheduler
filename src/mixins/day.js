@@ -11,9 +11,14 @@ let day = {
 
         weekdays: {
             default: () => [
-                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+                0, 1, 2, 3, 4, 5, 6
             ],
             type: Array | Function,
+        },
+
+        dayNames: {
+            default: () => [],
+            type: Array | Function
         },
 
         dateFormat: {
@@ -35,9 +40,13 @@ let day = {
     },
 
     created() {
-        moment.updateLocale(this.locale, {
-            weekdays: this.getWeekdays(),
-        });
+        let isFunction = typeof this.dayNames === 'function';
+
+        if (this.dayNames.length || isFunction) {
+            moment.updateLocale(this.locale, {
+                weekdays: isFunction ? this.dayNames() : (this.dayNames || []),
+            });
+        }
 
         this.buildDays();
     },
@@ -47,21 +56,24 @@ let day = {
         buildDays() {
 
             let vm = this,
-                startOfWeek = moment(this.weekOf).startOf('week')
+                startOfWeek = moment(this.weekOf).startOf('week'),
+                selectedDays = this.getWeekdays(),
+                d = 0
             ;
 
-            this.getWeekdays().forEach((day) => {
+            for (d = 0; d <= 6; d++) {
 
-                let date = startOfWeek.format('YYYY-MM-DD');
+                if (this.inArray(selectedDays, d)) {
+                    let date = startOfWeek.weekday(d);
 
-                vm.builtDays.push({
-                    name: day,
-                    date: date,
-                });
+                    vm.builtDays.push({
+                        name: date.format('dddd'),
+                        date: date.format('YYYY-MM-DD'),
+                        key: date.weekday(),
+                    });
+                }
 
-                startOfWeek.add(1, 'day');
-            });
-
+            }
         },
 
         getWeekdays() {
@@ -72,6 +84,33 @@ let day = {
                 return this.weekdays || [];
             }
 
+        },
+
+        buildDate(hourVar, end = false) {
+            let date = moment(`${this.weekOf} ${hourVar}`, `${this.dateFormat} ${this.hourFormat}`),
+                hour = date.hours(),
+                min = date.minutes();
+
+            if (end) {
+                date.endOf('week')
+            } else {
+                date.startOf('week')
+            }
+
+            date.hours(hour).minutes(min);
+
+            return date;
+        },
+
+        inArray(arr, i) {
+            let found = false;
+            for (let c = 0; c <= arr.length - 1; c++) {
+                if (arr.hasOwnProperty(c) && parseInt(arr[c]) === parseInt(i)) {
+                    found = true;
+                    break;
+                }
+            }
+            return found;
         },
 
     },
