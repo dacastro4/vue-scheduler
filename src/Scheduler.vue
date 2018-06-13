@@ -1,5 +1,6 @@
 <template>
-    <div id="scheduler" v-selectable="selectableFunctions()" data-item=".real-days" ref="scheduler">
+    <div id="scheduler" v-selectable="selectableFunctions()" data-item=".real-days" ref="scheduler" :disabled="disabled"
+         :class="{ 'disabled': disabled }">
         <div class="selection"></div>
         <div class="row">
             <div class="info-row">
@@ -49,6 +50,10 @@
                 default: null,
                 type: String,
             },
+            disabled: {
+                default: false,
+                type: Boolean,
+            },
         },
 
         data() {
@@ -72,6 +77,10 @@
 
         methods: {
 
+            disabledSchedule() {
+                return this.disabled;
+            },
+
             selectableFunctions() {
                 return {
                     selectedGetter: this.selectedGetter,
@@ -83,6 +92,7 @@
                     selectedProcessUp: this.selectedProcessUp,
                     updateSelectionProcess: this.updateSelectionProcess,
                     multiSelection: this.multiSelection,
+                    disabled: this.disabledSchedule,
                 };
             },
 

@@ -31,6 +31,11 @@ let day = {
             type: String,
         },
 
+        week: {
+            default: null,
+            type: String | Number,
+        },
+
     },
 
     data() {
@@ -60,6 +65,10 @@ let day = {
                 selectedDays = this.getWeekdays(),
                 d = 0
             ;
+
+            if(this.week) {
+                startOfWeek.weeks(this.week);
+            }
 
             for (d = 0; d <= 6; d++) {
 
@@ -113,6 +122,17 @@ let day = {
             return found;
         },
 
+    },
+
+    watch: {
+        weekOf() {
+            this.buildDays();
+            this.buildHours();
+        },
+        week() {
+            this.buildDays();
+            this.buildHours();
+        }
     },
 };
 
