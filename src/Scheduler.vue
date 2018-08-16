@@ -5,7 +5,9 @@
         <div class="row">
             <div class="info-row">
                <span class="week-number">
-                    Week Number: {{ weekNumber}}
+                    <slot>
+                        Week Number: {{ weekNumber}}
+                    </slot>
                </span>
             </div>
         </div>
