@@ -33,8 +33,13 @@ $blockHeight: 50px;
             display: block;
             height: $blockHeight;
             width: 100%;
-            background-color: lightgrey;
+            background-color: #FFFFFF;
             border-top: 1px solid black;
+
+            &.disabled {
+                background: #dadada;
+                cursor: not-allowed;
+            }
         }
 
         .days-column, .hours-column {
