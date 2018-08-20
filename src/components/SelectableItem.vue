@@ -18,14 +18,17 @@
 
             isSelected() {
                 let vm = this,
+                    $el = this.$el,
                     exists = false;
 
-                _.forEach(this.selected, (item) => {
-                    if((item.day).toString() === (vm.dayKey).toString() && (item.hour).toString() === (vm.hourKey).toString() && item.selected === true){
-                        exists = true;
-                        return false;
-                    }
-                });
+                if (!$el || ($el && !$el.classList.contains('disabled') && !$el.hasAttribute('disabled'))) {
+                    _.forEach(this.selected, (item) => {
+                        if ((item.day).toString() === (vm.dayKey).toString() && (item.hour).toString() === (vm.hourKey).toString() && item.selected === true) {
+                            exists = true;
+                            return false;
+                        }
+                    });
+                }
 
                 return exists;
 
@@ -33,15 +36,17 @@
 
             isSelecting() {
                 let vm = this,
+                    $el = this.$el,
                     exists = false;
 
-                _.forEach(this.selecting, (item) => {
-                    if((item.day).toString() === (vm.dayKey).toString() && (item.hour).toString() === (vm.hourKey).toString()){
-                        exists = true;
-                        return false;
-                    }
-                });
-
+                if (!$el || ($el && !$el.classList.contains('disabled') && !$el.hasAttribute('disabled'))) {
+                    _.forEach(this.selecting, (item) => {
+                        if ((item.day).toString() === (vm.dayKey).toString() && (item.hour).toString() === (vm.hourKey).toString()) {
+                            exists = true;
+                            return false;
+                        }
+                    });
+                }
                 return exists;
             },
 
